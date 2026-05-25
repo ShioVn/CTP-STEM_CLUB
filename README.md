@@ -34,7 +34,7 @@ Các tài khoản được cấu hình cứng trong file `src/config/users.ts`:
 ### 1. Clone & Cài đặt thư viện
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/ShioVn/CTP-STEM_CLUB
 cd ctp-scientia
 npm install
 ```
