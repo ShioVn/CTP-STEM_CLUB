@@ -1,0 +1,98 @@
+// Prisma schema for CTP Scientia STEM Club
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+enum ProjectStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  ENDED
+  CANCELLED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  username      String    @unique
+  name          String?
+  role          Role      @default(MEMBER)
+  bio           String?
+  age           Int?
+  phone         String?
+  socialLink    String?
+  department    String?
+  avatar        String?
+  skills        String[]  @default([])
+  joinedAt      DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  projects             Project[]
+  participatedProjects Project[] @relation("ProjectParticipants")
+
+  @@map("users")
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String        @db.Text
+  images      String[]
+  category    String
+  tags        String[]
+  status      ProjectStatus @default(PENDING)
+  authorId    String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  author       User   @relation(fields: [authorId], references: [id])
+  participants User[] @relation("ProjectParticipants")
+
+  @@map("projects")
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  description String      @db.Text
+  image       String?
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  status      EventStatus @default(UPCOMING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("events")
+}
+
+model RegistrationRequest {
+  id         String   @id @default(cuid())
+  name       String
+  username   String   @unique
+  password   String
+  department String?
+  skills     String[] @default([])
+  bio        String?  @db.Text
+  status     String   @default("PENDING") // PENDING, REVIEWED
+  createdAt  DateTime @default(now())
+
+  @@map("registration_requests")
+}
