@@ -40,7 +40,7 @@ npm install
 ```
 
 ### 2. Cấu hình biến môi trường
-Tạo file `.env` dựa trên `.env.example`:
+Tạo file `.env` dựa trên `env-example-copy`:
 ```bash
 DATABASE_URL="postgresql://username:password@localhost:5432/ctpscientia?schema=public"
 NEXTAUTH_SECRET="your-super-secret-string-here"
